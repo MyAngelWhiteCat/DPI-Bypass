@@ -26,7 +26,7 @@ bypasser.AddBypassRequiredHostname("googlevideo.com", BypassMethod::SSF_FAKED_SP
 ```
 Проверяется не только сам домен, но и производные от него.
 
-Добавление новых методов
+## Добавление новых методов
 Добавьте новый enum в BypassMethod:
 ```cpp
 enum class BypassMethod {
@@ -54,7 +54,6 @@ case BypassMethod::YOUR_NEW_METHOD:
 ```
 
 ## Установка и сборка
-Установка WinDivert
 Перед сборкой установите драйвер WinDivert:
 
 ```bash
@@ -62,7 +61,6 @@ windivert_install.bat
 ```
 (Запустите от имени администратора)
 
-Сборка проекта
 Убедитесь что файлы WinDivert64.sys, WinDivert.dll, WinDivert.lib и windivert.h находятся в папке проекта.
 Соберите с помощью CMake:
 
@@ -78,4 +76,3 @@ cmake --build . --config Release
 ```bash
 DPIbypass.exe
 ```
-Программа автоматически начнет перехватывать и модифицировать TLS-соединения
