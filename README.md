@@ -53,7 +53,7 @@ case BypassMethod::YOUR_NEW_METHOD:
     return;
 ```
 
-###Установка и сборка
+## Установка и сборка
 Установка WinDivert
 Перед сборкой установите драйвер WinDivert:
 
