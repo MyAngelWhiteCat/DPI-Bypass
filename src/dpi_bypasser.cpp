@@ -16,7 +16,7 @@ DPIBypasser::DPIBypasser(std::string_view listener_filter)
             std::cout << "Admin rights requred...\n";
         }
         else if (i == 1060) {
-            std::cout << "WinDivert is not installed\n";
+            std::cout << "WinDivert is not installed\nRun windivert_install.bat with admin rights";
         }
         std::cout << "Press Enter to exit..." << std::endl;
         std::cin.get();
