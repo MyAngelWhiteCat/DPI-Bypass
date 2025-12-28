@@ -66,10 +66,11 @@ windivert_install.bat
 Убедитесь что файлы WinDivert64.sys, WinDivert.dll, WinDivert.lib и windivert.h находятся в папке проекта.
 Соберите с помощью CMake:
 
-bash
+```bash
 mkdir build && cd build
 cmake ..
 cmake --build . --config Release
+```
 Использование
 
 Убедитесь, что файлы tls_clienthello_www_google_com.bin и WinDivert.dll находятся рядом с DPIbypass.exe
