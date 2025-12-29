@@ -114,8 +114,9 @@ private:
     void IncrementSeqNum(PWINDIVERT_TCPHDR tcphdr, UINT32 increment);
     void IncrementIPID(PWINDIVERT_IPHDR iphdr, UINT16 increment);
 
-    RaiiPacket GetPacketHeaders();
-    RaiiPacket GetPayloadPart(UINT bytes);
+    RaiiPacket GetCurrentCapturedPacketHeaders();
+    RaiiPacket GetCurrentCapturedPacketPayloadPart(UINT bytes);
+    RaiiPacket GetPacketSnipet(char* packet, UINT from, UINT to);
 
     void SetLength(PWINDIVERT_IPHDR iphdr, UINT new_len);
     void SetTimeStamp(PWINDIVERT_TCPHDR tcphdr, INT new_ts);
@@ -138,5 +139,6 @@ private:
     void Append(char* dst, char* src, UINT dst_size, UINT src_size);
     std::string IpToString(UINT32 ip);
     void PrintCurrentPacket();
-
+    void ActualizePacketHeaders(char* packet, UINT16 ip_id_increment, UINT seq_num_increment, UINT len);
+    RaiiPacket GlueTogether(char* first, char* second, UINT first_len, UINT second_len);
 };
