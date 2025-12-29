@@ -11,14 +11,24 @@ int main() {
         std::cout << "Geting ready..." << std::endl;
         DPIBypasser bypasser("outbound");
         bypasser.AddBypassRequiredHostname("osu.direct", BypassMethod::SIMPLE_SNI_FAKE);
-        bypasser.AddBypassRequiredHostname("catboy.best", BypassMethod::SIMPLE_SNI_FAKE);
+        bypasser.AddBypassRequiredHostname("catboy.best", BypassMethod::SIMPLE_SNI_SPLIT);
         bypasser.AddBypassRequiredHostname("api.nerinyan.moe", BypassMethod::SIMPLE_SNI_FAKE);
+
         bypasser.AddBypassRequiredHostname("www.youtube.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("youtube.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("googlevideo.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("i.ytimg.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("yt3.ggpht.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("i9.ytimg.com", BypassMethod::SSF_FAKED_SPLIT);
+
+        bypasser.AddBypassRequiredHostname("discord.com", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("discordapp.net", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("discord.gg", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("discord.media", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("mtalk.google.com", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("cloudflare-ech.com", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("login.live.com", BypassMethod::SSF_FAKED_SPLIT);
+
         try {
             std::cout << "System started!" << std::endl;
             bypasser.Listen();
