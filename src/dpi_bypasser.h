@@ -136,7 +136,6 @@ private:
         bool damage_checksum = false);
 
 
-    void Append(char* dst, char* src, UINT dst_size, UINT src_size);
     std::string IpToString(UINT32 ip);
     void PrintCurrentPacket();
     void ActualizePacketHeaders(char* packet, UINT16 ip_id_increment, UINT seq_num_increment, UINT len);
