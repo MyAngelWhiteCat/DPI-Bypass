@@ -366,6 +366,23 @@ bool DPIBypasser::SendPacket(char* packet, UINT packet_len, bool recalc_check, b
     }
     return true;
 }
+void DPIBypasser::SendSplitPacketPayload(const std::vector<UINT>& cut_marks) {
+    UINT last_mark = 0;
+    UINT16 id_increment = 0;
+    for (UINT mark : cut_marks) {
+        RaiiPacket packet_part = GetCurrentCapturedPacketHeaders();
+        packet_part.append(packet_.data() + data_offset_ + last_mark, data_offset_, mark);
+        ActualizePacketHeaders(packet_part.data(), id_increment, last_mark, data_offset_ + mark);
+        SendPacket(packet_part.data(), data_offset_ + mark, true, false);
+        last_mark = mark;
+        ++id_increment;
+    }
+    
+    RaiiPacket packet_part = GetCurrentCapturedPacketHeaders();
+    packet_part.append(packet_.data() + data_offset_ + last_mark, data_offset_, packet_len_ - last_mark);
+    ActualizePacketHeaders(packet_part.data(), id_increment, last_mark, packet_len_ - last_mark);
+    SendPacket(packet_part.data(), packet_len_ - last_mark, true, false);
+}
 
 void DPIBypasser::SendFakeSni(int repeats) {
     RaiiPacket fake_client_hello;

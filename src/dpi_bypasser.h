@@ -118,6 +118,7 @@ private:
     void SetLength(PWINDIVERT_IPHDR iphdr, UINT new_len);
     void SetTimeStamp(PWINDIVERT_TCPHDR tcphdr, INT new_ts);
 
+    void SendSplitPacketPayload(const std::vector<UINT>& cut_marks);
     void SendFakeSni(int repeats);
     void SendMaskedPacket(
         char* mask
