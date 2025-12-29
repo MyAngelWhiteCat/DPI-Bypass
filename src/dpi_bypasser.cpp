@@ -87,6 +87,10 @@ void DPIBypasser::SimpleSNIFake() {
     SendPacket(packet_.data(), packet_len_);
 }
 
+void DPIBypasser::SimpleSNISplit() {
+    SendSplitPacketPayload({2, 10, 20});
+}
+
 void DPIBypasser::MultiSNIFake() {
     SendFakeSni(sni_fake_repeats_);
     SendPacket(packet_.data(), packet_len_);

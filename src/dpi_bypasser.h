@@ -48,8 +48,9 @@ const size_t EXTENTION_TYPE_SIZE = 1;
 enum class BypassMethod {
     NON = 0,
     SIMPLE_SNI_FAKE = 1,
-    MULTI_SNI_FAKE = 2,
-    SSF_FAKED_SPLIT = 3
+    SIMPLE_SNI_SPLIT = 2,
+    MULTI_SNI_FAKE = 3,
+    SSF_FAKED_SPLIT = 4
     //...
 };
 
@@ -104,6 +105,7 @@ private:
     void Bypass(BypassMethod bypass_method);
 
     void SimpleSNIFake();
+    void SimpleSNISplit();
     void MultiSNIFake();
     void SniFakeAndFakedSplit();
 
