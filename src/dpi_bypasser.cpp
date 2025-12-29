@@ -405,10 +405,18 @@ RaiiPacket::RaiiPacket() {
     packet_ = new char[PACKET_SIZE] {};
 }
 
+RaiiPacket::RaiiPacket(UINT size) {
+    packet_ = new char[size] {};
+}
+
 RaiiPacket::~RaiiPacket() {
     delete[] packet_;
 }
 
 char* RaiiPacket::data() {
     return packet_;
+}
+
+void RaiiPacket::append(char* src, UINT pos, UINT count) {
+    memcpy(packet_ + pos, src, count);
 }

@@ -55,13 +55,17 @@ enum class BypassMethod {
 
 class RaiiPacket {
 public:
+    RaiiPacket();
+    RaiiPacket(UINT size);
+
     RaiiPacket(RaiiPacket&& other) noexcept;
     RaiiPacket(const RaiiPacket& other) = delete;
-    RaiiPacket();
+
     ~RaiiPacket();
     RaiiPacket operator=(const RaiiPacket& other) = delete;
 
     char* data();
+    void append(char* src, UINT pos, UINT count);
 
 private:
     char* packet_;
