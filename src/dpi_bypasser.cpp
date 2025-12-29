@@ -82,6 +82,24 @@ void DPIBypasser::PrintCurrentPacket() {
         << "][DstPort=" << htons(tcphdr_->DstPort) << "]\n";
 }
 
+void DPIBypasser::ActualizePacketHeaders(char* packet,
+    UINT16 ip_id_increment,
+    UINT seq_num_increment,
+    UINT len) {
+    PWINDIVERT_IPHDR iphdr = reinterpret_cast<PWINDIVERT_IPHDR>(packet);
+    PWINDIVERT_TCPHDR tcphdr = reinterpret_cast<PWINDIVERT_TCPHDR>(packet + 20);
+    SetLength(iphdr, len);
+    IncrementIPID(iphdr, ip_id_increment);
+    IncrementSeqNum(tcphdr, seq_num_increment);
+}
+
+RaiiPacket DPIBypasser::GlueTogether(char* first, char* second, UINT first_len, UINT second_len) {
+    RaiiPacket result(first_len + second_len);
+    result.append(first, 0, first_len);
+    result.append(second, first_len, second_len);
+    return result;
+}
+
 void DPIBypasser::SimpleSNIFake() {
     SendFakeSni(1);
     SendPacket(packet_.data(), packet_len_);
@@ -98,20 +116,16 @@ void DPIBypasser::MultiSNIFake() {
 
 void DPIBypasser::SniFakeAndFakedSplit() {
     SendFakeSni(sni_fake_repeats_);
-    auto garbage_mask = GetPacketHeaders();
-    auto split_packet_part0 = GetPacketHeaders();
-    Append(split_packet_part0.data(),
-        packet_.data() + data_offset_,
-        data_offset_, 2);
+    auto garbage_mask = GetCurrentCapturedPacketHeaders();
+    auto split_packet_part0 = GetCurrentCapturedPacketHeaders();
+    split_packet_part0.append(packet_.data() + data_offset_, data_offset_, 2);
 
     SendMaskedPacket(garbage_mask.data(), data_offset_ + 2,
         split_packet_part0.data(), data_offset_ + 2, 0);
 
-    auto mask = GetPacketHeaders();
-    auto splited_data_part1 = GetPacketHeaders();
-    Append(splited_data_part1.data(),
-        packet_.data() + data_offset_ + 2,
-        data_offset_, packet_len_ - 2);
+    auto mask = GetCurrentCapturedPacketHeaders();
+    auto splited_data_part1 = GetCurrentCapturedPacketHeaders();
+    splited_data_part1.append(packet_.data() + data_offset_ + 2, data_offset_, packet_len_ - 2);
 
     SendMaskedPacket(mask.data(), packet_len_, splited_data_part1.data(), packet_len_ - 2, 2);
 }
@@ -158,21 +172,22 @@ void DPIBypasser::SetLength(PWINDIVERT_IPHDR iphdr, UINT new_len) {
     iphdr->Length = htons(static_cast<UINT16>(new_len));
 }
 
-RaiiPacket DPIBypasser::GetPacketHeaders() {
+RaiiPacket DPIBypasser::GetCurrentCapturedPacketHeaders() {
     RaiiPacket garbage_packet;
     memcpy(garbage_packet.data(), packet_.data(), data_offset_);
     return garbage_packet;
 }
 
-RaiiPacket DPIBypasser::GetPayloadPart(UINT bytes) {
+RaiiPacket DPIBypasser::GetCurrentCapturedPacketPayloadPart(UINT bytes) {
     RaiiPacket payload_part;
     memcpy(payload_part.data(), packet_.data() + data_offset_, bytes);
     return payload_part;
 }
 
-
-void DPIBypasser::Append(char* dst, char* src, UINT dst_size, UINT src_size) {
-    memcpy(dst + dst_size, src, src_size);
+RaiiPacket DPIBypasser::GetPacketSnipet(char* packet, UINT from, UINT count) {
+    RaiiPacket snipet(count);
+    memcpy(snipet.data(), packet + from, count);
+    return snipet;
 }
 
 bool DPIBypasser::RecvPacket() {
@@ -214,6 +229,9 @@ void DPIBypasser::Bypass(BypassMethod bypass_method) {
         return;
     case BypassMethod::SSF_FAKED_SPLIT:
         SniFakeAndFakedSplit();
+        return;
+    case BypassMethod::SIMPLE_SNI_SPLIT:
+        SimpleSNISplit();
         return;
         //...
     }
