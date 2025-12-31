@@ -106,7 +106,7 @@ void DPIBypasser::SimpleSNIFake() {
 }
 
 void DPIBypasser::SimpleSNISplit() {
-    SendSplitPacketPayload({2, 10, 20});
+    SendSplitPacketPayload({2});
 }
 
 void DPIBypasser::MultiSNIFake() {
@@ -196,7 +196,7 @@ bool DPIBypasser::RecvPacket() {
         return false;
     }
 
-    if (packet_len_ < MINIMUM_IPV4HDR_SIZE) {
+    if (packet_len_ < VALIDATE_FILTER) {
         SendPacket(packet_.data(), packet_len_, false);
         return false;
     }
@@ -204,7 +204,7 @@ bool DPIBypasser::RecvPacket() {
 }
 
 bool DPIBypasser::ValidatePacket() {
-    if (!iphdr_ || !tcphdr_ || !addr_.Outbound || !payload_ || payload_len_ < SNI_MIN_SIZE) {
+    if (!iphdr_ || !tcphdr_ || !payload_) {
         SendPacket(packet_.data(), packet_len_, false);
         return false;
     }
@@ -376,10 +376,10 @@ bool DPIBypasser::SendPacket(char* packet, UINT packet_len, bool recalc_check, b
         else {
             std::cout << "CheckSum recalculated success\n";
         }
-    }
-    if (damage_checksum) {
-        PWINDIVERT_TCPHDR tcp_hdr = (PWINDIVERT_TCPHDR)(packet + MINIMUM_IPV4HDR_SIZE);
-        tcp_hdr->Checksum = htons(ntohs(tcp_hdr->Checksum) - 1);
+        if (damage_checksum) {
+            PWINDIVERT_TCPHDR tcp_hdr = (PWINDIVERT_TCPHDR)(packet + MINIMUM_IPV4HDR_SIZE);
+            tcp_hdr->Checksum = htons(ntohs(tcp_hdr->Checksum) - 1);
+        }
     }
 
     if (!WinDivertSend(handle_, packet, packet_len, NULL, &addr_)) {

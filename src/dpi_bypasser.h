@@ -11,6 +11,7 @@
 #include <string_view>
 #include <unordered_map>
 #include <Windows.h>
+#include <vector>
 
 
 const size_t PACKET_SIZE = 65535;
@@ -43,6 +44,7 @@ const char SNI_EXTENTION = 0x0000;
 const size_t EXTENTION_HEADER_SIZE = 4;
 const size_t SNI_LIST_LEN_SIZE = 2;
 const size_t EXTENTION_TYPE_SIZE = 1;
+const size_t VALIDATE_FILTER = SNI_MIN_SIZE + MINIMUM_IPV4HDR_SIZE;
 
 
 enum class BypassMethod {
