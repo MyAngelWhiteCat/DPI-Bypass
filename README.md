@@ -9,7 +9,8 @@
 - discord (пока что только текстовые каналы)
 - osu.direct И зеркала - api.nerinyan.moe, catboy.best
 
- 
+
+# Для разработчиков
 
 ## Методы обхода
 
