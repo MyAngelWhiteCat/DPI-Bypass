@@ -79,7 +79,7 @@ public:
     DPIBypasser(std::string_view listener_filter);
     DPIBypasser();
     ~DPIBypasser();
-    void Listen();
+    void Start();
     void AddBypassRequiredHostname(const std::string_view hostname, const BypassMethod method);
     void SetFakeSNIRepeats(UINT8 repeats);
 

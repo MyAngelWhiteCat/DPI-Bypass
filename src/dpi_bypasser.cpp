@@ -10,7 +10,7 @@ DPIBypasser::DPIBypasser(std::string_view listener_filter)
             std::cout << "Incorrect filter\n";
         }
         else if (i == 2) {
-            std::cout << "WinDivert.sys not found\n";
+            std::cout << "WinDivert.sys not installed\nRun windivert_install.bat as admin";
         }
         else if (i == 5) {
             std::cout << "Admin rights requred...\n";
@@ -37,7 +37,7 @@ DPIBypasser::~DPIBypasser() {
 }
 
 
-void DPIBypasser::Listen() {
+void DPIBypasser::Start() {
     while (true) {
         if (!RecvPacket()) {
             continue;
