@@ -1,6 +1,8 @@
 #include "dpi_bypasser.h"
 #include <filesystem>
 #include <Windows.h>
+#include <thread>
+#include <chrono>
 
 int main() {
     if (!std::filesystem::exists(std::filesystem::current_path() / "tls_clienthello_www_google_com.bin")) {
@@ -34,7 +36,7 @@ int main() {
         std::cout << "Setted up!\n";
         try {
             std::cout << "5 seconds before start\nWindow will be hidden!\nRun KillProcess.bat for close DPIbypass" << std::endl;
-            Sleep(5000); // For the user to read the information
+            std::this_thread::sleep_for(std::chrono::seconds(5)); // For the user to read the information
             ShowWindow(GetConsoleWindow(), SW_HIDE); // Hide window
             bypasser.Start();
         }
