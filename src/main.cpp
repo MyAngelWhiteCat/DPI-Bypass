@@ -1,5 +1,6 @@
 #include "dpi_bypasser.h"
 #include <filesystem>
+#include <Windows.h>
 
 int main() {
     if (!std::filesystem::exists(std::filesystem::current_path() / "tls_clienthello_www_google_com.bin")) {
@@ -8,8 +9,9 @@ int main() {
             << "And put it here -> " << std::filesystem::current_path().string() << "\n";
     }
     else {
-        std::cout << "Geting ready..." << std::endl;
+        std::cout << "Getting ready...\n";
         DPIBypasser bypasser("outbound");
+        std::cout << "Setup bypass rules...\n";
         bypasser.AddBypassRequiredHostname("osu.direct", BypassMethod::SIMPLE_SNI_FAKE);
         bypasser.AddBypassRequiredHostname("catboy.best", BypassMethod::SIMPLE_SNI_SPLIT);
         bypasser.AddBypassRequiredHostname("api.nerinyan.moe", BypassMethod::SIMPLE_SNI_FAKE);
@@ -22,16 +24,19 @@ int main() {
         bypasser.AddBypassRequiredHostname("i9.ytimg.com", BypassMethod::SSF_FAKED_SPLIT);
 
         bypasser.AddBypassRequiredHostname("discord.com", BypassMethod::SSF_FAKED_SPLIT);
-        bypasser.AddBypassRequiredHostname("discordapp.net", BypassMethod::SSF_FAKED_SPLIT);
+        bypasser.AddBypassRequiredHostname("discord", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("discord.gg", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("discord.media", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("mtalk.google.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("cloudflare-ech.com", BypassMethod::SSF_FAKED_SPLIT);
         bypasser.AddBypassRequiredHostname("login.live.com", BypassMethod::SSF_FAKED_SPLIT);
 
+        std::cout << "Setted up!\n";
         try {
-            std::cout << "System started!" << std::endl;
-            bypasser.Listen();
+            std::cout << "5 seconds before start\nWindow will be hidden!\nRun Stop.bat for close DPIbypass" << std::endl;
+            Sleep(5000); // For the user to read the information
+            ShowWindow(GetConsoleWindow(), SW_HIDE); // Hide window
+            bypasser.Start();
         }
         catch (const std::exception& e) {
             std::cout << e.what() << std::endl;
