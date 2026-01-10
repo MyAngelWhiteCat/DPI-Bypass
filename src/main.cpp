@@ -33,7 +33,7 @@ int main() {
 
         std::cout << "Setted up!\n";
         try {
-            std::cout << "5 seconds before start\nWindow will be hidden!\nRun Stop.bat for close DPIbypass" << std::endl;
+            std::cout << "5 seconds before start\nWindow will be hidden!\nRun KillProcess.bat for close DPIbypass" << std::endl;
             Sleep(5000); // For the user to read the information
             ShowWindow(GetConsoleWindow(), SW_HIDE); // Hide window
             bypasser.Start();
