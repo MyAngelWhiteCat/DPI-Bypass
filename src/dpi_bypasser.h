@@ -125,6 +125,8 @@ private:
 
     void SendSplitPacketPayload(const std::vector<UINT>& cut_marks);
     void SendFakeSni(int repeats);
+
+
     void SendMaskedPacket(
         char* mask
         , UINT mask_len
@@ -140,6 +142,6 @@ private:
 
     std::string IpToString(UINT32 ip);
     void PrintCurrentPacket();
-    void ActualizePacketHeaders(char* packet, UINT16 ip_id_increment, UINT seq_num_increment, UINT len);
+    void IncrementIdSeqNumAndSetLen(char* packet, UINT16 ip_id_increment, UINT seq_num_increment, UINT len);
     RaiiPacket GlueTogether(char* first, char* second, UINT first_len, UINT second_len);
 };

@@ -15,9 +15,7 @@ DPIBypasser::DPIBypasser(std::string_view listener_filter)
         else if (i == 5) {
             std::cout << "Admin rights requred...\n";
         }
-        else if (i == 1060) {
-            std::cout << "WinDivert is not installed\nRun windivert_install.bat with admin rights";
-        }
+
         std::cout << "Press Enter to exit..." << std::endl;
         std::cin.get();
         std::terminate();
@@ -82,7 +80,7 @@ void DPIBypasser::PrintCurrentPacket() {
         << "][DstPort=" << htons(tcphdr_->DstPort) << "]\n";
 }
 
-void DPIBypasser::ActualizePacketHeaders(char* packet,
+void DPIBypasser::IncrementIdSeqNumAndSetLen(char* packet,
     UINT16 ip_id_increment,
     UINT seq_num_increment,
     UINT len) {
@@ -394,7 +392,7 @@ void DPIBypasser::SendSplitPacketPayload(const std::vector<UINT>& cut_marks) {
     for (UINT mark : cut_marks) {
         RaiiPacket packet_part = GetCurrentCapturedPacketHeaders();
         packet_part.append(packet_.data() + data_offset_ + last_mark, data_offset_, mark);
-        ActualizePacketHeaders(packet_part.data(), id_increment, last_mark, data_offset_ + mark);
+        IncrementIdSeqNumAndSetLen(packet_part.data(), id_increment, last_mark, data_offset_ + mark);
         SendPacket(packet_part.data(), data_offset_ + mark, true, false);
         last_mark = mark;
         ++id_increment;
@@ -402,7 +400,7 @@ void DPIBypasser::SendSplitPacketPayload(const std::vector<UINT>& cut_marks) {
     
     RaiiPacket packet_part = GetCurrentCapturedPacketHeaders();
     packet_part.append(packet_.data() + data_offset_ + last_mark, data_offset_, packet_len_ - last_mark);
-    ActualizePacketHeaders(packet_part.data(), id_increment, last_mark, packet_len_ - last_mark);
+    IncrementIdSeqNumAndSetLen(packet_part.data(), id_increment, last_mark, packet_len_ - last_mark);
     SendPacket(packet_part.data(), packet_len_ - last_mark, true, false);
 }
 
