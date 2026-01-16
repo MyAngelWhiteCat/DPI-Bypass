@@ -37,7 +37,21 @@ bypasser.AddBypassRequiredHostname("osu.direct", BypassMethod::SIMPLE_SNI_FAKE);
 bypasser.AddBypassRequiredHostname("www.youtube.com", BypassMethod::SSF_FAKED_SPLIT);
 bypasser.AddBypassRequiredHostname("googlevideo.com", BypassMethod::SSF_FAKED_SPLIT);
 ```
-Проверяется не только сам домен, но и производные от него.
+Проверяется не только сам домен, но и производные от него. Например, при запросе всего содержимого страницы, могут отправляться множество TLS пакетов содержащих SNI формата: 
+```
+sni-example.com
+onemore-sni-example.com
+andmore-sni-example-andhere.com 
+```
+Тогда весь трафик можно пропустить через фильтр добавив лишь 1 метод обхода 
+```cpp
+AddBypassRequiredHostname("sni-example", BypassMethod::SIMPLE_SNI_FAKE);
+```
+Но в таком случае под модификацию могут попасть лишние пакеты. В таком случае, для конкретного SNI нужно добавить NON правило обхода.
+
+```cpp
+AddBypassRequiredHostname("full-name-of-sni-example.com", BypassMethod::NON);
+```
 
 ## Добавление новых методов
 Добавьте новый enum в BypassMethod:
