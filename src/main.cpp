@@ -5,14 +5,7 @@
 #include <chrono>
 
 
-int main() {
-    if (!std::filesystem::exists(std::filesystem::current_path() / "tls_clienthello_www_google_com.bin")) {
-        std::cout << "Can't find tls_clienthello_www_google_com.bin file\n"
-            << "Take it from here https://github.com/MyAngelWhiteCat/DPI-Bypass/releases/latest\n"
-            << "And put it here -> " << std::filesystem::current_path().string() << "\n";
-    }
-    else {
-        DPIBypasser bypasser("outbound");
+void AddMainBypassRecourses(DPIBypasser& bypasser) {
         bypasser.AddBypassRequiredHostname("osu.direct", BypassMethod::SIMPLE_SNI_FAKE);
         bypasser.AddBypassRequiredHostname("catboy.best", BypassMethod::SIMPLE_SNI_SPLIT);
         bypasser.AddBypassRequiredHostname("api.nerinyan.moe", BypassMethod::SIMPLE_SNI_FAKE);
@@ -34,6 +27,22 @@ int main() {
 
         bypasser.AddBypassRequiredHostname("tryhackme", BypassMethod::SSF_FAKED_SPLIT);
 
+    bypasser.AddBypassRequiredHostname("googleapis", BypassMethod::SSF_FAKED_SPLIT);
+    bypasser.AddBypassRequiredHostname("ultraiso", BypassMethod::SSF_FAKED_SPLIT);
+
+    bypasser.AddBypassRequiredHostname("hex-rays", BypassMethod::SSF_FAKED_SPLIT);
+}
+
+int main() {
+    if (!std::filesystem::exists(std::filesystem::current_path() / "tls_clienthello_www_google_com.bin")) {
+        std::cout << "Can't find tls_clienthello_www_google_com.bin file\n"
+            << "Take it from here https://github.com/MyAngelWhiteCat/DPI-Bypass/releases/latest\n"
+            << "And put it here -> " << std::filesystem::current_path().string() << "\n";
+    }
+    else {
+        DPIBypasser bypasser("outbound");
+        AddMainBypassRecourses(bypasser);
+        
         try {
             std::cout << "5 seconds before start\nWindow will be hidden!\n!For close - run KillProcess.bat as admin! or find and kill DPIbypass.exe task in TM" << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(5)); // For the user to read the information
