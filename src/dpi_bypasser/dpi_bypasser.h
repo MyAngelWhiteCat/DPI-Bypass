@@ -145,6 +145,9 @@ private:
     
     std::string IpToString(UINT32 ip);
     void PrintCurrentPacket(std::ostream& out);
-    void IncrementIdSeqNumAndSetLen(char* packet, UINT16 ip_id_increment, UINT seq_num_increment, UINT len);
+    void IncrementIdSeqNumAndSetLen(char* packet,
+        UINT16 ip_id_increment,
+        UINT seq_num_increment,
+        UINT len);
     RaiiPacket GlueTogether(char* first, char* second, UINT first_len, UINT second_len);
 };
