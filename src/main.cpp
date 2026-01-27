@@ -35,7 +35,7 @@ int main() {
         bypasser.AddBypassRequiredHostname("tryhackme", BypassMethod::SSF_FAKED_SPLIT);
 
         try {
-            std::cout << "5 seconds before start\nWindow will be hidden!\n!For close - run KillProcess.bat as admin!" << std::endl;
+            std::cout << "5 seconds before start\nWindow will be hidden!\n!For close - run KillProcess.bat as admin! or find and kill DPIbypass.exe task in TM" << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(5)); // For the user to read the information
             ShowWindow(GetConsoleWindow(), SW_HIDE); // Hide window
             bypasser.Start();
