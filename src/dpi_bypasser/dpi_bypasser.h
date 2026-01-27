@@ -13,11 +13,11 @@
 #include "windivert.h"
 
 
-const size_t PACKET_SIZE = 65535;
+const size_t PACKET_SIZE = 20000;
 const UINT8 WORD_WEIGHT = 4;
 const UINT8 MIN_PAYLOAD_SIZE = 5;
 const UINT8 SNI_MIN_SIZE = 50;
-const UINT MINIMUM_IPV4HDR_SIZE = 20;
+const UINT8 MINIMUM_IPV4HDR_SIZE = 20;
 
 const char HANDSHAKE = 0x16;
 const size_t HANDSHAKE_POS = 0;
@@ -43,7 +43,7 @@ const char SNI_EXTENTION = 0x0000;
 const size_t EXTENTION_HEADER_SIZE = 4;
 const size_t SNI_LIST_LEN_SIZE = 2;
 const size_t EXTENTION_TYPE_SIZE = 1;
-const size_t VALIDATE_FILTER = SNI_MIN_SIZE + MINIMUM_IPV4HDR_SIZE;
+const size_t CLIENT_HELLO_PACKET_MINIMUM_SIZE = SNI_MIN_SIZE + MINIMUM_IPV4HDR_SIZE;
 
 
 enum class BypassMethod {
