@@ -82,6 +82,12 @@ public:
     void AddBypassIngnoreHostname(const std::string_view hostname);
     void SetFakeSNIRepeats(UINT8 repeats);
 
+    void SetSniFakeRepeats(UINT new_repeats);
+    UINT GetSniFakeRepeats() const;
+
+    void SetMaskedPacketsRepeats(UINT new_repeats);
+    UINT GetMaskedPacketsRepeats() const;
+
 private:
     std::string filter_;
     HANDLE handle_{ nullptr };
