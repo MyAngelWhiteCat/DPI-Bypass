@@ -1,5 +1,17 @@
 #include "dpi_bypasser.h"
+
 #include <exception>
+#include <fstream>
+#include <iostream>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <string.h>
+#include <string_view>
+#include <vector>
+
+#include <windivert.h>
+#include <Windows.h>
 
 DPIBypasser::DPIBypasser(std::string_view listener_filter)
     : filter_(listener_filter)
@@ -71,6 +83,22 @@ void DPIBypasser::AddBypassIngnoreHostname(const std::string_view hostname) {
 
 void DPIBypasser::SetFakeSNIRepeats(UINT8 repeats) {
     sni_fake_repeats_ = repeats;
+}
+
+void DPIBypasser::SetSniFakeRepeats(UINT new_repeats) {
+    sni_fake_repeats_ = new_repeats;
+}
+
+UINT DPIBypasser::GetSniFakeRepeats() const {
+    return sni_fake_repeats_;
+}
+
+void DPIBypasser::SetMaskedPacketsRepeats(UINT new_repeats) {
+    masked_packets_repeats_ = new_repeats;
+}
+
+UINT DPIBypasser::GetMaskedPacketsRepeats() const {
+    return masked_packets_repeats_;
 }
 
 void DPIBypasser::PrintCurrentPacket(std::ostream& out) {
