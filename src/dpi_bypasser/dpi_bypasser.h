@@ -98,6 +98,7 @@ private:
 
     std::unordered_map<std::string, BypassMethod> resource_to_bypass_method_;
     UINT sni_fake_repeats_ = 6;
+    UINT masked_packets_repeats_ = 6;
 
     bool RecvPacket();
     void ParseHeaders();

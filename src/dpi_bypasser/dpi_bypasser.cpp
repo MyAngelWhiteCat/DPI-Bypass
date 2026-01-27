@@ -161,14 +161,15 @@ void DPIBypasser::SendMaskedPacket(
     PWINDIVERT_TCPHDR packet_tcphdr = reinterpret_cast<PWINDIVERT_TCPHDR>
         (packet + packet_iphdr->HdrLength * WORD_WEIGHT);
 
-    IncrementTimeStamp(mask_tcphdr, -600000);
+    const int TIMESTAMP_DAMAGE = -600000;
+    IncrementTimeStamp(mask_tcphdr, TIMESTAMP_DAMAGE);
     SetLength(mask_iphdr, mask_len);
     SetLength(packet_iphdr, packet_len);
     IncrementSeqNum(mask_tcphdr, mask_seq_incr);
     IncrementSeqNum(packet_tcphdr, mask_seq_incr);
     IncrementIPID(mask_iphdr, 1);
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < masked_packets_repeats_; ++i) {
         SendPacket(mask, mask_len, true, false);
     }
 
@@ -176,7 +177,7 @@ void DPIBypasser::SendMaskedPacket(
     SendPacket(packet, packet_len, true, false);
     IncrementIPID(mask_iphdr, 2);
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < masked_packets_repeats_; ++i) {
         SendPacket(mask, mask_len, true, false);
     }
 }
