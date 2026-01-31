@@ -6,7 +6,6 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
-#include <string.h>
 #include <string_view>
 #include <vector>
 
@@ -18,20 +17,20 @@ DPIBypasser::DPIBypasser(std::string_view listener_filter)
 {
     handle_ = WinDivertOpen(filter_.data(), WINDIVERT_LAYER_NETWORK, 0, 0);
     if (handle_ == INVALID_HANDLE_VALUE) {
+        std::string error;
+
         int i = static_cast<int>(GetLastError());
         if (i == 1) {
-            std::cout << "Incorrect filter\n";
+            error = "Incorrect filter\n";
         }
         else if (i == 2) {
-            std::cout << "WinDivert.sys not installed\nRun windivert_install.bat as admin";
+            error = "WinDivert.sys not installed\nRun windivert_install.bat as admin";
         }
         else if (i == 5) {
-            std::cout << "Admin rights requred...\n";
+            error = "Admin rights requred...\n";
         }
 
-        std::cout << "Press Enter to exit..." << std::endl;
-        std::cin.get();
-        std::terminate();
+        throw std::runtime_error("DPIbypasser error: " + error);
     }
 }
 
@@ -46,7 +45,6 @@ DPIBypasser::DPIBypasser() {
 DPIBypasser::~DPIBypasser() {
     WinDivertClose(handle_);
 }
-
 
 void DPIBypasser::Start() {
     while (true) {
