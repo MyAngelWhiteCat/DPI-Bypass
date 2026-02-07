@@ -41,7 +41,7 @@ bypasser.AddBypassRequiredHostname("googlevideo.com", BypassMethod::SIMPLE_SNI_F
 Учитывайте, что проверяется не только сам домен, но и производные от него.
 
 ## Добавление новых методов в 4 простых шага
-1 Добавьте новый enum в BypassMethod:
+1. Добавьте новый enum в BypassMethod:
 ```cpp
 enum class BypassMethod {
     NON = 0,
@@ -51,7 +51,7 @@ enum class BypassMethod {
     //...
 };
 ```
-2 Реализуйте метод в классе DPIBypasser:
+2. Реализуйте метод в классе DPIBypasser:
 ```cpp
 class DPIBypasser {
     ...
@@ -60,14 +60,14 @@ class DPIBypasser {
 };
 ```
 
-3 Добавьте обработку в метод Bypass():
+3. Добавьте обработку в метод Bypass():
 ```cpp
 case BypassMethod::YOUR_NEW_METHOD:
     YourNewMethod();
     return;
 ```
 
-4 Исопльзуйте ваш метод:
+4. Используйте ваш метод:
 ```cpp
 bypasser.AddBypassRequiredHostname("test.com", BypassMethod::YOUR_NEW_METHOD);
 ```
